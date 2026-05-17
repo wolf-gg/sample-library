@@ -33,7 +33,7 @@ export class BookService {
   async create(book: CreateBookDto) {
     const newBook = await this.bookRepository.create(book);
 
-    return newBook;
+    return { id: newBook.id, author: newBook.author, title: newBook.title };
   }
 
   async deleteOne(id: string) {

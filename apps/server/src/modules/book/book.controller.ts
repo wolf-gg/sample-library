@@ -25,8 +25,6 @@ export class BookController {
 
   @Post()
   async create(@Body() book: CreateBookDto) {
-    await this.bookService.create(book);
-
-    return 'Successfully created new book';
+    return this.bookService.create(book);
   }
 }
