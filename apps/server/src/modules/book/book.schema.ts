@@ -3,10 +3,10 @@ import { HydratedDocument } from 'mongoose';
 
 @Schema()
 export class Book {
-  @Prop()
+  @Prop({ required: true })
   title: string;
 
-  @Prop()
+  @Prop({ required: true })
   author: string;
 }
 
