@@ -18,7 +18,7 @@ import {
 } from "client/libs/shadcn/field"
 import { Input } from "client/libs/shadcn/input"
 import { Label } from "client/libs/shadcn/label"
-import { BookDto } from "client/types"
+import { BookDto, FindAllBooksResponse } from "client/types"
 import { Plus } from "lucide-react"
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
@@ -59,23 +59,20 @@ export const AddBookDialog: React.FC = () => {
   })
 
   const onSubmit = (data: Form) => {
-    addBook.trigger<BookDto>(data, {
+    addBook.trigger(data, {
       onSuccess: (newBook: BookDto) => {
         setOpen(false)
         form.reset()
-        mutate(
-          "fetch-all-books",
-          (prev?: { count: number; books: BookDto[] }) => {
-            if (prev === undefined) {
-              return prev
-            }
-
-            return {
-              count: prev.count + 1,
-              books: [...prev.books, newBook],
-            }
+        mutate("fetch-all-books", (prev?: FindAllBooksResponse) => {
+          if (prev === undefined) {
+            return prev
           }
-        )
+
+          return {
+            count: prev.count + 1,
+            books: [...prev.books, newBook],
+          }
+        })
       },
     })
   }

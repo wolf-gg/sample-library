@@ -18,9 +18,7 @@ export class BookController {
 
   @Delete(':id')
   async deleteOne(@Param('id') id: string) {
-    await this.bookService.deleteOne(id);
-
-    return 'Successfully deleted book';
+    return this.bookService.deleteOne(id);
   }
 
   @Post()

@@ -19,7 +19,7 @@ export const Body: React.FC = () => {
   return (
     <div className="p-6">
       <div className="flex flex-col gap-4">
-        <div className="align-center flex flex-row justify-between">
+        <div className="flex flex-row items-center justify-between">
           <AddBookDialog />
           <p>{`${data.count} books`}</p>
         </div>
