@@ -1,24 +1,31 @@
-import { Controller, Get, Post } from '@nestjs/common';
-import { BookType } from './book.schema';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { BookService } from './book.service';
+import type { BookDto, CreateBookDto, FindAllBooksResponse } from './book.dto';
 
 @Controller('books')
 export class BookController {
   constructor(private bookService: BookService) {}
 
   @Get()
-  findAll() {
-    return 'Return all books';
+  async findAll(): Promise<FindAllBooksResponse> {
+    return this.bookService.findAll();
   }
 
-  @Get()
-  findOne() {
-    return 'Return one book';
+  @Get(':id')
+  async findOne(@Param('id') id: string): Promise<BookDto> {
+    return this.bookService.findOne(id);
+  }
+
+  @Delete(':id')
+  async deleteOne(@Param('id') id: string) {
+    await this.bookService.deleteOne(id);
+
+    return 'Successfully deleted book';
   }
 
   @Post()
-  async create() {
-    await this.bookService.create({ title: 'test', author: 'test author' });
+  async create(@Body() book: CreateBookDto) {
+    await this.bookService.create(book);
 
     return 'Successfully created new book';
   }
