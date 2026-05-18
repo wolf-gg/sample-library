@@ -17,8 +17,7 @@ import {
   FieldLabel,
 } from "client/libs/shadcn/field"
 import { Input } from "client/libs/shadcn/input"
-import { Label } from "client/libs/shadcn/label"
-import { BookDto, FindAllBooksResponse } from "client/types"
+import { BookDto, FindAllBooksResponse } from "common/dto/book"
 import { Plus } from "lucide-react"
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"

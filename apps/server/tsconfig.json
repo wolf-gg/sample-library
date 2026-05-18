@@ -13,9 +13,14 @@
     "target": "ES2023",
     "sourceMap": true,
     "outDir": "./dist",
+    "rootDir": "../",
     "incremental": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "strictPropertyInitialization": false
-  }
+    "strictPropertyInitialization": false,
+    "paths": {
+      "common/*": ["../common/*"],
+    }
+  },
+  "include": ["src/**/*", "../common/**/*"],
 }

@@ -1,4 +1,4 @@
-import { BookDto } from "client/types"
+import { BookDto } from "common/dto/book"
 import { BookCard } from "./BookCard"
 
 export const BookGrid: React.FC<{ books: BookDto[] }> = ({ books }) => (

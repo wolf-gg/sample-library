@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "client/libs/shadcn/dialog"
-import { FindAllBooksResponse } from "client/types"
+import { FindAllBooksResponse } from "common/dto/book"
 import { Trash } from "lucide-react"
 import { useState } from "react"
 import { mutate } from "swr"

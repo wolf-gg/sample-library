@@ -1,4 +1,4 @@
-import { BookDto } from "client/types"
+import { BookDto } from "common/dto/book"
 import { RemoveBookButton } from "./RemoveBookButton"
 
 export const BookCard: React.FC<{ book: BookDto }> = ({ book }) => (

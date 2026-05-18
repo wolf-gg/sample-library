@@ -1,7 +1,7 @@
-import { BookDto } from "client/types"
 import useSWR from "swr"
 import { AddBookDialog } from "./AddBookDialog"
 import { BookGrid } from "./BookGrid."
+import { BookDto } from "common/dto/book"
 
 export const BookManagement: React.FC = () => {
   const { data } = useSWR<{ count: number; books: BookDto[] }>(

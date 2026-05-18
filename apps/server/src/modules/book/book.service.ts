@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Book } from './book.schema';
 import { Model } from 'mongoose';
-import { BookDto, CreateBookDto, FindAllBooksResponse } from './book.dto';
+import { BookDto, CreateBookDto, FindAllBooksResponse } from 'common/dto/book';
 
 @Injectable()
 export class BookService {
