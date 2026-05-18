@@ -2,6 +2,8 @@ import { Geist, Geist_Mono } from "next/font/google"
 
 import "./globals.css"
 import { cn } from "client/libs/utils"
+import { Header } from "client/components/Header"
+import { Separator } from "client/libs/shadcn/separator"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -26,7 +28,13 @@ export default function RootLayout({
         geist.variable
       )}
     >
-      <body>{children}</body>
+      <body>
+        <div className="flex min-h-svh flex-col">
+          <Header />
+          <Separator />
+          <div className="p-6">{children}</div>
+        </div>
+      </body>
     </html>
   )
 }
