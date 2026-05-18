@@ -25,6 +25,11 @@ export class BookController {
     return this.bookService.deleteOne(id);
   }
 
+  @Post(':id/borrow')
+  async borrow(@Param('id') id: string) {
+    return this.bookService.borrow(id);
+  }
+
   @Post()
   async create(@Body() book: CreateBookDto) {
     return this.bookService.create(book);

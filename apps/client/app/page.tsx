@@ -1,13 +1,7 @@
-"use client"
-
-import { Header } from "client/components/Header"
-import { Separator } from "client/libs/shadcn/separator"
-import { BookManagement } from "client/modules"
+import { BookLending } from "client/modules"
 
 const Page: React.FC = () => {
-  return (
-    <div className="flex min-h-svh flex-col">This is where we borrow books</div>
-  )
+  return <BookLending />
 }
 
 export default Page

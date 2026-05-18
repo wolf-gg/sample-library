@@ -1,11 +1,10 @@
 "use client"
 
 import useSWR from "swr"
-import { AddBookDialog } from "./AddBookDialog"
-import { BookGrid } from "./BookGrid."
-import { FindAllBooksResponse } from "common/dto/book"
+import { BookGrid } from "./BookGrid"
+import { BookStatus, FindAllBooksResponse } from "common/dto/book"
 
-export const BookManagement: React.FC = () => {
+export const BookLending: React.FC = () => {
   const { data } = useSWR<FindAllBooksResponse>("fetch-all-books", async () => {
     const response = await fetch("http://localhost:3001/books")
     return response.json()
@@ -15,16 +14,19 @@ export const BookManagement: React.FC = () => {
     return <></>
   }
 
+  const availableBooks = data.books.filter(
+    (book) => book.status === BookStatus.AVAILABLE
+  )
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-row items-center justify-between">
         <div>
-          <h2 className="text-lg font-bold">Manage Books</h2>
+          <h2 className="text-lg font-bold">Borrow Books</h2>
           <p className="text-sm text-muted-foreground">
-            {`${data.count} books total`}
+            {`${data.count} books total · ${availableBooks.length} available`}
           </p>
         </div>
-        <AddBookDialog />
       </div>
       <BookGrid books={data.books} />
     </div>

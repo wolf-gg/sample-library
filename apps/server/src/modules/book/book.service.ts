@@ -1,8 +1,17 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Book } from './book.schema';
 import { Model } from 'mongoose';
-import { BookDto, CreateBookDto, FindAllBooksResponse } from 'common/dto/book';
+import {
+  BookDto,
+  BookStatus,
+  CreateBookDto,
+  FindAllBooksResponse,
+} from 'common/dto/book';
 
 @Injectable()
 export class BookService {
@@ -16,6 +25,8 @@ export class BookService {
         id: book.id,
         title: book.title,
         author: book.author,
+        status: book.status,
+        borrowedAt: book.borrowedAt?.toISOString(),
       })),
     };
   }
@@ -27,13 +38,25 @@ export class BookService {
       throw new NotFoundException('Book not found');
     }
 
-    return { id: book.id, title: book.title, author: book.author };
+    return {
+      id: book.id,
+      title: book.title,
+      author: book.author,
+      status: book.status,
+      borrowedAt: book.borrowedAt?.toISOString(),
+    };
   }
 
   async create(book: CreateBookDto) {
     const newBook = await this.bookRepository.create(book);
 
-    return { id: newBook.id, author: newBook.author, title: newBook.title };
+    return {
+      id: newBook.id,
+      author: newBook.author,
+      title: newBook.title,
+      status: newBook.status,
+      borrowedAt: newBook.borrowedAt?.toISOString(),
+    };
   }
 
   async deleteOne(id: string) {
@@ -44,5 +67,23 @@ export class BookService {
     }
 
     return deletedBook._id.toString();
+  }
+
+  async borrow(id: string) {
+    const book = await this.bookRepository.findById(id);
+
+    if (book === null) {
+      throw new NotFoundException('Book not found');
+    }
+
+    if (book.status === 'CHECKED_OUT') {
+      throw new BadRequestException('Book is already checked out');
+    }
+
+    book.status = BookStatus.CHECKED_OUT;
+    book.borrowedAt = new Date();
+    await book.save();
+
+    return { id: book.id, title: book.title, author: book.author };
   }
 }
