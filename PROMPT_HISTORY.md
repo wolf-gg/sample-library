@@ -11,3 +11,9 @@
 > Add a new state for books called "Overdue" when the books is checked out for more than 1 week.
 >
 > In the card, add the number of days the book is overdue.
+
+## 3. Feature: Add login page
+* **Prompt Template:**
+> Add a 'Login' module and expose it in the /login page.
+>
+> Use the same form implementation used in AddBookDialog. Add validations that the input fields must not be empty.
