@@ -30,6 +30,11 @@ export class BookController {
     return this.bookService.borrow(id);
   }
 
+  @Post(':id/return')
+  async return(@Param('id') id: string) {
+    return this.bookService.return(id);
+  }
+
   @Post()
   async create(@Body() book: CreateBookDto) {
     return this.bookService.create(book);

@@ -13,6 +13,22 @@ import {
   FindAllBooksResponse,
 } from 'common/dto/book';
 
+const OVERDUE_THRESHOLD_MS = 7 * 24 * 60 * 60 * 1000;
+
+const getComputedStatus = (
+  status: BookStatus,
+  borrowedAt?: Date,
+): BookStatus => {
+  if (status === BookStatus.CHECKED_OUT && borrowedAt) {
+    const elapsedMs = Date.now() - borrowedAt.getTime();
+    if (elapsedMs > OVERDUE_THRESHOLD_MS) {
+      return BookStatus.OVERDUE;
+    }
+  }
+
+  return status;
+};
+
 @Injectable()
 export class BookService {
   constructor(@InjectModel(Book.name) private bookRepository: Model<Book>) {}
@@ -25,7 +41,7 @@ export class BookService {
         id: book.id,
         title: book.title,
         author: book.author,
-        status: book.status,
+        status: getComputedStatus(book.status, book.borrowedAt),
         borrowedAt: book.borrowedAt?.toISOString(),
       })),
     };
@@ -42,7 +58,7 @@ export class BookService {
       id: book.id,
       title: book.title,
       author: book.author,
-      status: book.status,
+      status: getComputedStatus(book.status, book.borrowedAt),
       borrowedAt: book.borrowedAt?.toISOString(),
     };
   }
@@ -76,12 +92,29 @@ export class BookService {
       throw new NotFoundException('Book not found');
     }
 
-    if (book.status === 'CHECKED_OUT') {
+    if (book.status !== BookStatus.AVAILABLE) {
       throw new BadRequestException('Book is already checked out');
     }
 
     book.status = BookStatus.CHECKED_OUT;
     book.borrowedAt = new Date();
+    await book.save();
+
+    return { id: book.id, title: book.title, author: book.author };
+  }
+
+  async return(id: string) {
+    const book = await this.bookRepository.findById(id);
+
+    if (book === null) {
+      throw new NotFoundException('Book not found');
+    }
+
+    if (book.status === 'AVAILABLE') {
+      throw new BadRequestException('Book is not checked out');
+    }
+
+    book.status = BookStatus.AVAILABLE;
     await book.save();
 
     return { id: book.id, title: book.title, author: book.author };

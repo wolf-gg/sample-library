@@ -19,4 +19,5 @@ export interface FindAllBooksResponse {
 export enum BookStatus {
   AVAILABLE = "AVAILABLE",
   CHECKED_OUT = "CHECKED_OUT",
+  OVERDUE = "OVERDUE",
 }
