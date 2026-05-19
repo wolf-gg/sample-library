@@ -17,3 +17,11 @@
 > Add a 'Login' module and expose it in the /login page.
 >
 > Use the same form implementation used in AddBookDialog. Add validations that the input fields must not be empty.
+
+## 4. Feature: Add registration page
+* **Prompt Template:**
+> Create a module inside RegisterForm so that we can use it in the /register page.
+>
+> The module should allow new users to sign up by providing a username, first name, last name.
+>
+> Create a new controller inside register.controller.ts that creates a user in the database.

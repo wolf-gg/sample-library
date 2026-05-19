@@ -15,6 +15,7 @@ import useSWRMutation from "swr/mutation"
 import { LoginUserDto } from "common/dto/login"
 import { toast } from "sonner"
 import { ServerError } from "common/dto/error"
+import { Server } from "lucide-react"
 
 const formSchema = z.object({
   username: z.string().nonempty("Username must not be empty"),
@@ -40,23 +41,22 @@ export const LoginForm: React.FC = () => {
       const responseData = await response.json()
 
       if (response.ok === false) {
-        throw responseData as ServerError
+        throw new ServerError(responseData)
       }
 
-      return response.json()
-    },
-    {
-      throwOnError: false,
+      return responseData
     }
   )
 
-  const onSubmit = (data: Form) => {
-    loginUser.trigger(data, {
-      onError: (error: ServerError) => {
+  const onSubmit = async (data: Form) => {
+    try {
+      await loginUser.trigger(data)
+    } catch (error) {
+      if (ServerError.validate(error)) {
         form.reset()
         toast.error(error.message)
-      },
-    })
+      }
+    }
   }
 
   return (

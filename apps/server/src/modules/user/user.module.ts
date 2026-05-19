@@ -4,6 +4,7 @@ import { User, UserSchema } from './user.schema';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { LoginController } from './login.controller';
+import { RegisterController } from './register.controller';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { LoginController } from './login.controller';
       },
     ]),
   ],
-  controllers: [UserController, LoginController],
+  controllers: [UserController, LoginController, RegisterController],
   providers: [UserService],
 })
 export class UserModule {}
