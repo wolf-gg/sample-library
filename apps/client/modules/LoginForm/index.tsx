@@ -15,7 +15,9 @@ import useSWRMutation from "swr/mutation"
 import { LoginUserDto } from "common/dto/login"
 import { toast } from "sonner"
 import { ServerError } from "common/dto/error"
-import { Server } from "lucide-react"
+import { useLoginStore } from "client/stores/login"
+import { UserDto } from "common/dto/user"
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
   username: z.string().nonempty("Username must not be empty"),
@@ -24,6 +26,9 @@ const formSchema = z.object({
 type Form = z.infer<typeof formSchema>
 
 export const LoginForm: React.FC = () => {
+  const router = useRouter()
+  const storeUserDetails = useLoginStore((state) => state.storeUserDetails)
+
   const form = useForm<Form>({
     resolver: zodResolver(formSchema),
     defaultValues: { username: "" },
@@ -44,13 +49,15 @@ export const LoginForm: React.FC = () => {
         throw new ServerError(responseData)
       }
 
-      return responseData
+      return responseData as UserDto
     }
   )
 
   const onSubmit = async (data: Form) => {
     try {
-      await loginUser.trigger(data)
+      const user = await loginUser.trigger(data)
+      storeUserDetails(user)
+      router.push("/")
     } catch (error) {
       if (ServerError.validate(error)) {
         form.reset()
