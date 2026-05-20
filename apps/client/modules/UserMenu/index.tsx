@@ -1,7 +1,9 @@
 "use client"
 
-import { LoginButton, LogoutButton } from "client/modules"
 import { useLoginStore } from "client/stores/login"
+import { LogoutButton } from "./LogoutButton"
+import { LoginButton } from "./LoginButton"
+import { RegisterButton } from "./RegisterButton"
 
 export const UserMenu: React.FC = () => {
   const loggedInUser = useLoginStore((state) => state.loggedInUser)
@@ -22,7 +24,12 @@ export const UserMenu: React.FC = () => {
       </div>
     )
   } else if (isLoggedIn === false) {
-    return <LoginButton />
+    return (
+      <div className="flex flex-row items-center gap-4">
+        <LoginButton />
+        <RegisterButton />
+      </div>
+    )
   } else {
     return <></>
   }

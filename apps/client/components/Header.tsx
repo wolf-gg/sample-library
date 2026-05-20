@@ -2,7 +2,7 @@ import {
   NavigationMenu,
   NavigationMenuLink,
 } from "client/libs/shadcn/navigation-menu"
-import { UserMenu } from "./UserMenu"
+import { UserMenu } from "client/modules"
 
 export const Header: React.FC = () => (
   <div className="flex flex-row justify-between p-6">
