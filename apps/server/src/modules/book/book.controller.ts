@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { BookService } from './book.service';
 import type {
   BookDto,
+  BorrowBookDto,
   CreateBookDto,
   FindAllBooksResponse,
 } from 'common/dto/book';
@@ -26,8 +27,8 @@ export class BookController {
   }
 
   @Post(':id/borrow')
-  async borrow(@Param('id') id: string) {
-    return this.bookService.borrow(id);
+  async borrow(@Param('id') id: string, @Body() dto: BorrowBookDto) {
+    return this.bookService.borrow(id, dto.borrowedBy);
   }
 
   @Post(':id/return')
@@ -36,7 +37,7 @@ export class BookController {
   }
 
   @Post()
-  async create(@Body() book: CreateBookDto) {
-    return this.bookService.create(book);
+  async create(@Body() dto: CreateBookDto) {
+    return this.bookService.create(dto);
   }
 }

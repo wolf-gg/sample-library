@@ -1,8 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from './user.schema';
-import { Model } from 'mongoose';
 import { CreateUserDto } from 'common/dto/user';
+import { Model } from 'mongoose';
+import { User } from './user.schema';
 
 @Injectable()
 export class UserService {
@@ -21,6 +21,21 @@ export class UserService {
 
   async findByUsername(username: string) {
     const user = await this.userRepository.findOne({ username });
+
+    if (user === null) {
+      return null;
+    }
+
+    return {
+      id: user.id,
+      username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    };
+  }
+
+  async findById(id: string) {
+    const user = await this.userRepository.findById(id);
 
     if (user === null) {
       return null;

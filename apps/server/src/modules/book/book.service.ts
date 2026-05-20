@@ -4,14 +4,15 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Book } from './book.schema';
-import { Model } from 'mongoose';
 import {
   BookDto,
   BookStatus,
   CreateBookDto,
   FindAllBooksResponse,
 } from 'common/dto/book';
+import { UserDto } from 'common/dto/user';
+import mongoose, { Model } from 'mongoose';
+import { Book } from './book.schema';
 
 const OVERDUE_THRESHOLD_MS = 7 * 24 * 60 * 60 * 1000;
 
@@ -34,7 +35,8 @@ export class BookService {
   constructor(@InjectModel(Book.name) private bookRepository: Model<Book>) {}
 
   async findAll(): Promise<FindAllBooksResponse> {
-    const allBooks = await this.bookRepository.find();
+    const allBooks = await this.bookRepository.find().populate('borrowedBy');
+
     return {
       count: allBooks.length,
       books: allBooks.map((book) => ({
@@ -43,6 +45,7 @@ export class BookService {
         author: book.author,
         status: getComputedStatus(book.status, book.borrowedAt),
         borrowedAt: book.borrowedAt?.toISOString(),
+        borrowedBy: book.borrowedBy as unknown as UserDto,
       })),
     };
   }
@@ -85,19 +88,18 @@ export class BookService {
     return deletedBook._id.toString();
   }
 
-  async borrow(id: string) {
+  async borrow(id: string, userId: string) {
     const book = await this.bookRepository.findById(id);
 
     if (book === null) {
       throw new NotFoundException('Book not found');
-    }
-
-    if (book.status !== BookStatus.AVAILABLE) {
+    } else if (book.status !== BookStatus.AVAILABLE) {
       throw new BadRequestException('Book is already checked out');
     }
 
     book.status = BookStatus.CHECKED_OUT;
     book.borrowedAt = new Date();
+    book.borrowedBy = new mongoose.Types.ObjectId(userId);
     await book.save();
 
     return { id: book.id, title: book.title, author: book.author };
@@ -115,6 +117,8 @@ export class BookService {
     }
 
     book.status = BookStatus.AVAILABLE;
+    book.borrowedAt = undefined;
+    book.borrowedBy = undefined;
     await book.save();
 
     return { id: book.id, title: book.title, author: book.author };

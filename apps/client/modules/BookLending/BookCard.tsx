@@ -2,6 +2,7 @@ import { BookDto, BookStatus } from "common/dto/book"
 import { BorrowBookButton } from "./BorrowBookButton"
 import { ReturnBookButton } from "./ReturnBookButton"
 import { BookStatusLabel } from "./BookStatusLabel"
+import { UserDto } from "common/dto/user"
 
 const formatBorrowedAt = (status: BookStatus, borrowedAt?: string) => {
   if (!borrowedAt || status === BookStatus.AVAILABLE) {
@@ -9,6 +10,13 @@ const formatBorrowedAt = (status: BookStatus, borrowedAt?: string) => {
   }
 
   return new Date(borrowedAt).toLocaleString()
+}
+
+const getBorrowedBy = (user?: UserDto) => {
+  if (user === undefined) {
+    return "—"
+  }
+  return `${user.firstName} ${user.lastName}`
 }
 
 export const BookCard: React.FC<{ book: BookDto }> = ({ book }) => {
@@ -24,6 +32,10 @@ export const BookCard: React.FC<{ book: BookDto }> = ({ book }) => {
           <p>
             <span className="font-semibold">Checked out:</span>{" "}
             {formatBorrowedAt(book.status, book.borrowedAt)}
+          </p>
+          <p>
+            <span className="font-semibold">Borrowed by:</span>{" "}
+            {getBorrowedBy(book.borrowedBy)}
           </p>
         </div>
       </div>

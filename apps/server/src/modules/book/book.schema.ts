@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BookStatus } from 'common/dto/book';
+import mongoose from 'mongoose';
 
 @Schema()
 export class Book {
@@ -18,7 +19,10 @@ export class Book {
   status: BookStatus;
 
   @Prop({ required: false })
-  borrowedAt: Date;
+  borrowedAt?: Date;
+
+  @Prop({ required: false, type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  borrowedBy?: mongoose.Types.ObjectId;
 }
 
 export const BookSchema = SchemaFactory.createForClass(Book);
