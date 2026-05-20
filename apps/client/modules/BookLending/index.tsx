@@ -3,6 +3,7 @@
 import useSWR from "swr"
 import { BookGrid } from "./BookGrid"
 import { BookStatus, FindAllBooksResponse } from "common/dto/book"
+import { LoadingScreen } from "client/components/LoadingScreen"
 
 export const BookLending: React.FC = () => {
   const { data } = useSWR<FindAllBooksResponse>("fetch-all-books", async () => {
@@ -11,7 +12,7 @@ export const BookLending: React.FC = () => {
   })
 
   if (data === undefined) {
-    return <></>
+    return <LoadingScreen message="Loading books..." />
   }
 
   const availableBooks = data.books.filter(
@@ -19,7 +20,7 @@ export const BookLending: React.FC = () => {
   )
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex grow flex-col gap-4">
       <div className="flex flex-row items-center justify-between">
         <div>
           <h2 className="text-lg font-bold">Borrow Books</h2>

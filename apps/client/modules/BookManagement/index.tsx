@@ -4,6 +4,7 @@ import useSWR from "swr"
 import { AddBookDialog } from "./AddBookDialog"
 import { BookGrid } from "./BookGrid."
 import { FindAllBooksResponse } from "common/dto/book"
+import { LoadingScreen } from "client/components/LoadingScreen"
 
 export const BookManagement: React.FC = () => {
   const { data } = useSWR<FindAllBooksResponse>("fetch-all-books", async () => {
@@ -12,11 +13,11 @@ export const BookManagement: React.FC = () => {
   })
 
   if (data === undefined) {
-    return <></>
+    return <LoadingScreen message="Loading books..." />
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex grow flex-col gap-4">
       <div className="flex flex-row items-center justify-between">
         <div>
           <h2 className="text-lg font-bold">Manage Books</h2>
