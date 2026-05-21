@@ -25,3 +25,15 @@
 > The module should allow new users to sign up by providing a username, first name, last name.
 >
 > Create a new controller inside register.controller.ts that creates a user in the database.
+
+## 5. Feature: Add borrow dialog
+* **Prompt Template:**
+> Add a dialog in this button that shows a warning for the user that they can only borrow a book for 7 days or else they will have to pay.
+
+## 6. Design: Borrow dialog text for unsigned users
+* **Prompt Template:**
+> Improve the title and description in 'LoginDialog' to show that only signed in users can borrow books
+
+## 7. Design: Add return dialog
+* **Prompt Template:**
+> Create a dialog that warns the user that other users can check out the book once they returned the book.

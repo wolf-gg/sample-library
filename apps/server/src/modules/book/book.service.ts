@@ -45,7 +45,9 @@ export class BookService {
         author: book.author,
         status: getComputedStatus(book.status, book.borrowedAt),
         borrowedAt: book.borrowedAt?.toISOString(),
-        borrowedBy: book.borrowedBy as unknown as UserDto,
+        // This is a quick, but not ideal workaround to convert the
+        // populated document type into `UserDto`.
+        borrowedBy: book.borrowedBy?.toJSON() as unknown as UserDto,
       })),
     };
   }
