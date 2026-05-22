@@ -1,17 +1,5 @@
 import { BookDto, BookStatus } from "common/dto/book"
-
-const getOverdueDays = (borrowedAt?: string) => {
-  if (!borrowedAt) {
-    return 0
-  }
-
-  const msPerDay = 1000 * 60 * 60 * 24
-  const elapsedDays = Math.floor(
-    (Date.now() - new Date(borrowedAt).getTime()) / msPerDay
-  )
-
-  return Math.max(0, elapsedDays - 7)
-}
+import { getOverdueDays } from "common/utils/book"
 
 export const BookStatusLabel: React.FC<{ book: BookDto }> = ({ book }) => {
   const getStatusColor = () => {
@@ -29,7 +17,7 @@ export const BookStatusLabel: React.FC<{ book: BookDto }> = ({ book }) => {
       return "Available"
     } else if (book.status === BookStatus.OVERDUE) {
       const overdueDays = getOverdueDays(book.borrowedAt)
-      return `Overdue${overdueDays > 0 ? ` (${overdueDays} day${overdueDays > 1 ? "s" : ""})` : ""}`
+      return `Overdue ${overdueDays > 0 ? `(${overdueDays} day${overdueDays > 1 ? "s" : ""})` : ""}`
     } else if (book.status === BookStatus.CHECKED_OUT) {
       return "Checked out"
     }

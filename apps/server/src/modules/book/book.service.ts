@@ -14,65 +14,55 @@ import { UserDto } from 'common/dto/user';
 import mongoose, { Model } from 'mongoose';
 import { Book } from './book.schema';
 
-const OVERDUE_THRESHOLD_MS = 7 * 24 * 60 * 60 * 1000;
-
-const getComputedStatus = (
-  status: BookStatus,
-  borrowedAt?: Date,
-): BookStatus => {
-  if (status === BookStatus.CHECKED_OUT && borrowedAt) {
-    const elapsedMs = Date.now() - borrowedAt.getTime();
-    if (elapsedMs > OVERDUE_THRESHOLD_MS) {
-      return BookStatus.OVERDUE;
-    }
-  }
-
-  return status;
-};
-
 @Injectable()
 export class BookService {
   constructor(@InjectModel(Book.name) private bookRepository: Model<Book>) {}
 
   async findAll(): Promise<FindAllBooksResponse> {
-    const allBooks = await this.bookRepository.find().populate('borrowedBy');
+    const allBooksQuery = await this.bookRepository
+      .find()
+      .populate('borrowedBy');
+
+    const allBooks = allBooksQuery.map((book) => book.toJSON());
 
     return {
       count: allBooks.length,
       books: allBooks.map((book) => ({
-        id: book.id,
+        id: book._id.toString(),
         title: book.title,
         author: book.author,
-        status: getComputedStatus(book.status, book.borrowedAt),
+        status: book.status,
         borrowedAt: book.borrowedAt?.toISOString(),
         // This is a quick, but not ideal workaround to convert the
         // populated document type into `UserDto`.
-        borrowedBy: book.borrowedBy?.toJSON() as unknown as UserDto,
+        borrowedBy: book.borrowedBy as unknown as UserDto,
       })),
     };
   }
 
   async findOne(id: string): Promise<BookDto> {
-    const book = await this.bookRepository.findById(id);
+    const bookQuery = await this.bookRepository.findById(id);
+    const book = bookQuery?.toJSON();
 
-    if (book === null) {
+    if (book === undefined) {
       throw new NotFoundException('Book not found');
     }
 
     return {
-      id: book.id,
+      id: book._id.toString(),
       title: book.title,
       author: book.author,
-      status: getComputedStatus(book.status, book.borrowedAt),
+      status: book.status,
       borrowedAt: book.borrowedAt?.toISOString(),
     };
   }
 
   async create(book: CreateBookDto) {
-    const newBook = await this.bookRepository.create(book);
+    const newBookQuery = await this.bookRepository.create(book);
+    const newBook = newBookQuery.toJSON();
 
     return {
-      id: newBook.id,
+      id: newBook._id.toString(),
       author: newBook.author,
       title: newBook.title,
       status: newBook.status,

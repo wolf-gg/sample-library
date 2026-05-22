@@ -23,14 +23,15 @@ const getBorrowedBy = (user?: UserDto) => {
 const ActionButton: React.FC<{
   id: string
   status: BookStatus
+  borrowedAt?: string
   borrowedBy?: UserDto
-}> = ({ id, status, borrowedBy }) => {
+}> = ({ id, status, borrowedAt, borrowedBy }) => {
+  const isLoggedIn = useLoginStore((state) => state.isLoggedIn)
+  const loggedInUser = useLoginStore((state) => state.loggedInUser)
+
   if (status === BookStatus.AVAILABLE) {
     return <BorrowBookButton id={id} />
   }
-
-  const isLoggedIn = useLoginStore((state) => state.isLoggedIn)
-  const loggedInUser = useLoginStore((state) => state.loggedInUser)
 
   const isDifferentUserLoggedIn = () => {
     if (
@@ -46,11 +47,15 @@ const ActionButton: React.FC<{
     }
   }
 
-  if (isDifferentUserLoggedIn() || isLoggedIn === false) {
+  if (
+    isDifferentUserLoggedIn() ||
+    isLoggedIn === false ||
+    borrowedAt === undefined
+  ) {
     return <></>
   }
 
-  return <ReturnBookButton id={id} />
+  return <ReturnBookButton id={id} status={status} borrowedAt={borrowedAt} />
 }
 
 export const BookCard: React.FC<{ book: BookDto }> = ({ book }) => {
@@ -78,6 +83,7 @@ export const BookCard: React.FC<{ book: BookDto }> = ({ book }) => {
           id={book.id}
           status={book.status}
           borrowedBy={book.borrowedBy}
+          borrowedAt={book.borrowedAt}
         />
       </div>
     </div>

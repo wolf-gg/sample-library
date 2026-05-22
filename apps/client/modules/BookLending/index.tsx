@@ -1,9 +1,9 @@
 "use client"
 
+import { LoadingScreen } from "client/components/LoadingScreen"
+import { BookStatus, FindAllBooksResponse } from "common/dto/book"
 import useSWR from "swr"
 import { BookGrid } from "./BookGrid"
-import { BookStatus, FindAllBooksResponse } from "common/dto/book"
-import { LoadingScreen } from "client/components/LoadingScreen"
 
 export const BookLending: React.FC = () => {
   const { data } = useSWR<FindAllBooksResponse>("fetch-all-books", async () => {
