@@ -6,7 +6,7 @@ export interface PaymentDto {
   amount: number;
   book: BookDto;
   paidBy: UserDto;
-  paidAt: Date;
+  paidAt: string;
 }
 
 export interface CreatePaymentDto {

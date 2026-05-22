@@ -30,7 +30,26 @@ export class PaymentService {
       // populated document type into `Dto`.
       book: newPayment.book as unknown as BookDto,
       paidBy: newPayment.paidBy as unknown as UserDto,
-      paidAt: newPayment.paidAt,
+      paidAt: newPayment.paidAt.toISOString(),
     };
+  }
+
+  async findAllPaymentsByUser(userId: string): Promise<PaymentDto[]> {
+    const paymentsQuery = await this.paymentRepository
+      .find({
+        paidBy: userId,
+      })
+      .populate(['book', 'paidBy']);
+    const payments = paymentsQuery.map((paymentQuery) => paymentQuery.toJSON());
+
+    return payments.map((payment) => ({
+      id: payment._id.toString(),
+      amount: payment.amount,
+      // This is a quick, but not ideal workaround to convert the
+      // populated document type into `Dto`.
+      book: payment.book as unknown as BookDto,
+      paidBy: payment.paidBy as unknown as UserDto,
+      paidAt: payment.paidAt.toISOString(),
+    }));
   }
 }

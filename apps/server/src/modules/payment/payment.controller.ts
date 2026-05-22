@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import type { CreatePaymentDto } from 'common/dto/payment';
 import { PaymentService } from './payment.service';
 
@@ -13,5 +13,10 @@ export class PaymentController {
       dto.userId,
       dto.bookId,
     );
+  }
+
+  @Get(':userId')
+  async findAllPaymentsByUser(@Param('userId') userId: string) {
+    return this.paymentService.findAllPaymentsByUser(userId);
   }
 }

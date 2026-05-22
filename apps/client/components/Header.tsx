@@ -11,6 +11,7 @@ export const Header: React.FC = () => (
       <NavigationMenu>
         <NavigationMenuLink href="/">Borrow</NavigationMenuLink>
         <NavigationMenuLink href="/manage">Manage</NavigationMenuLink>
+        <NavigationMenuLink href="/payments">Payments</NavigationMenuLink>
       </NavigationMenu>
     </div>
     <UserMenu />
