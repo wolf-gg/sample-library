@@ -10,6 +10,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "client/libs/shadcn/dialog"
+import { useLoginStore } from "client/stores/login"
+import { CreatePaymentDto } from "common/dto/payment"
 import { mutate } from "swr"
 import useSWRMutation from "swr/mutation"
 
@@ -24,6 +26,8 @@ export const OverdueDialog: React.FC<{
   onOpenChange: (open: boolean) => void
   onConfirm: () => void
 }> = ({ id, open, overdueDays, onOpenChange, onConfirm }) => {
+  const loggedInUser = useLoginStore((state) => state.loggedInUser)
+
   const totalAmount = overdueDays * OVERDUE_RATE
 
   const returnBook = useSWRMutation(
@@ -35,6 +39,19 @@ export const OverdueDialog: React.FC<{
           method: "POST",
         }
       )
+      return response.json()
+    }
+  )
+
+  const payOverdueBook = useSWRMutation(
+    "pay-overdue-book",
+    async (_, { arg }: { arg: CreatePaymentDto }) => {
+      const response = await fetch("http://localhost:3001/payments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(arg),
+      })
+
       return response.json()
     }
   )
@@ -61,14 +78,21 @@ export const OverdueDialog: React.FC<{
             <Button variant="outline">Cancel</Button>
           </DialogClose>
           <Button
-            disabled={returnBook.isMutating}
-            onClick={() => {
-              returnBook.trigger(id, {
-                onSuccess: () => {
-                  onConfirm()
-                  mutate("fetch-all-books")
-                },
+            disabled={
+              returnBook.isMutating ||
+              payOverdueBook.isMutating ||
+              loggedInUser === undefined
+            }
+            onClick={async () => {
+              await returnBook.trigger(id)
+              await payOverdueBook.trigger({
+                amount: totalAmount,
+                bookId: id,
+                userId: loggedInUser!.id,
               })
+
+              onConfirm()
+              mutate("fetch-all-books")
             }}
           >
             Confirm

@@ -17,8 +17,6 @@ export const ReturnBookButton: React.FC<{
   const overdueDays = getOverdueDays(borrowedAt)
   const isOverdue = status === BookStatus.OVERDUE && overdueDays > 0
 
-  console.log(overdueDays, status)
-
   return (
     <>
       <Button
