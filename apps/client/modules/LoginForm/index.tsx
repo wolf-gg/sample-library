@@ -1,6 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
+import { ADMIN_USERNAME } from "client/constants/admin"
 import { Button } from "client/libs/shadcn/button"
 import {
   Field,
@@ -9,15 +10,15 @@ import {
   FieldLabel,
 } from "client/libs/shadcn/field"
 import { Input } from "client/libs/shadcn/input"
-import z from "zod"
-import { Controller, useForm } from "react-hook-form"
-import useSWRMutation from "swr/mutation"
-import { LoginUserDto } from "common/dto/login"
-import { toast } from "sonner"
-import { ServerError } from "common/dto/error"
 import { useLoginStore } from "client/stores/login"
+import { ServerError } from "common/dto/error"
+import { LoginUserDto } from "common/dto/login"
 import { UserDto } from "common/dto/user"
 import { useRouter } from "next/navigation"
+import { Controller, useForm } from "react-hook-form"
+import { toast } from "sonner"
+import useSWRMutation from "swr/mutation"
+import z from "zod"
 
 const formSchema = z.object({
   username: z.string().nonempty("Username must not be empty"),
@@ -57,7 +58,12 @@ export const LoginForm: React.FC = () => {
     try {
       const user = await loginUser.trigger(data)
       storeUserDetails(user)
-      router.push("/")
+
+      if (data.username === ADMIN_USERNAME) {
+        router.push("/manage")
+      } else {
+        router.push("/")
+      }
     } catch (error) {
       if (ServerError.validate(error)) {
         form.reset()
