@@ -43,3 +43,9 @@
 > Create a dialog that allows a user to update the title and author of a book.
 >
 > Try to match the design pattern used in 'AddBookDialog'.
+
+## 8. Feature: Allow admins to edit the checkout date of a borrowed book
+* **Prompt Template:**
+> Create a dialog inside EditCheckoutRowButton so that admins can edit the checkout date of a book.
+
+> Use the `DatePicker` component for this.

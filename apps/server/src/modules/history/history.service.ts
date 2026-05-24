@@ -1,7 +1,11 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { CheckoutRecordDto } from 'common/dto/history';
-import mongoose, { Model } from 'mongoose';
+import { CheckoutRecordDto, UpdateRecordDto } from 'common/dto/history';
+import mongoose, { HydratedDocument, Model } from 'mongoose';
 import { Book } from '../book/book.schema';
 import { CheckoutRecord } from './history.schema';
 
@@ -11,6 +15,29 @@ export class CheckoutRecordService {
     @InjectModel(CheckoutRecord.name)
     private checkoutRecordRepository: Model<CheckoutRecord>,
   ) {}
+
+  private toDto(record: HydratedDocument<CheckoutRecord>) {
+    const book = record.book as Book;
+
+    return {
+      id: record.id,
+      bookTitle: book.title,
+      borrowedAt: record.borrowedAt.toISOString(),
+      returnedAt: record.returnedAt?.toISOString(),
+      returned: record.returned,
+    };
+  }
+
+  async findAllForAdmin(): Promise<CheckoutRecordDto[]> {
+    const checkoutRecordsForAdmin = await this.checkoutRecordRepository
+      .find()
+      .sort({
+        borrowedAt: 'desc',
+      })
+      .populate('book');
+
+    return checkoutRecordsForAdmin.map((record) => this.toDto(record));
+  }
 
   async findAllByUser(userId: string): Promise<CheckoutRecordDto[]> {
     const checkoutRecordsByUser = await this.checkoutRecordRepository
@@ -22,17 +49,7 @@ export class CheckoutRecordService {
       })
       .populate('book');
 
-    return checkoutRecordsByUser.map((record) => {
-      const book = record.book as Book;
-
-      return {
-        id: record.id,
-        bookTitle: book.title,
-        borrowedAt: record.borrowedAt.toISOString(),
-        returnedAt: record.returnedAt?.toISOString(),
-        returned: record.returned,
-      };
-    });
+    return checkoutRecordsByUser.map((record) => this.toDto(record));
   }
 
   async create(userId: string, bookId: string): Promise<string> {
@@ -55,5 +72,20 @@ export class CheckoutRecordService {
     checkoutRecord.returnedAt = new Date();
     checkoutRecord.returned = true;
     await checkoutRecord.save();
+  }
+
+  async update(id: string, record: UpdateRecordDto) {
+    const updatedRecord = await this.checkoutRecordRepository.findByIdAndUpdate(
+      id,
+      {
+        ...record,
+      },
+    );
+
+    if (updatedRecord === null) {
+      throw new NotFoundException('Checkout record not found');
+    }
+
+    return this.toDto(updatedRecord);
   }
 }

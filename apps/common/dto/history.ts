@@ -5,3 +5,7 @@ export interface CheckoutRecordDto {
   returnedAt?: string;
   bookTitle: string;
 }
+
+export interface UpdateRecordDto {
+  borrowedAt: string;
+}

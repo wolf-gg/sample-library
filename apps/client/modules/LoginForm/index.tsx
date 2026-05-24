@@ -60,7 +60,7 @@ export const LoginForm: React.FC = () => {
       storeUserDetails(user)
 
       if (data.username === ADMIN_USERNAME) {
-        router.push("/manage")
+        router.push("/admin/books")
       } else {
         router.push("/")
       }

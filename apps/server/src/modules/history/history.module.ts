@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AdminHistoryController } from './admin.history.controller';
 import { HistoryController } from './history.controller';
 import { CheckoutRecord, CheckoutRecordSchema } from './history.schema';
 import { CheckoutRecordService } from './history.service';
@@ -13,7 +14,7 @@ import { CheckoutRecordService } from './history.service';
       },
     ]),
   ],
-  controllers: [HistoryController],
+  controllers: [HistoryController, AdminHistoryController],
   providers: [CheckoutRecordService],
   exports: [CheckoutRecordService],
 })

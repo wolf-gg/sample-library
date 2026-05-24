@@ -2,7 +2,8 @@ import { NavigationMenu } from "client/libs/shadcn/navigation-menu"
 import {
   BorrowMenuLink,
   HistoryMenuLink,
-  ManageMenuLink,
+  ManageBooksMenuLink,
+  ManageCheckoutsMenuLink,
   PaymentsMenuLink,
   UserMenu,
 } from "client/modules"
@@ -15,7 +16,8 @@ export const Header: React.FC = () => (
         <BorrowMenuLink />
         <HistoryMenuLink />
         <PaymentsMenuLink />
-        <ManageMenuLink />
+        <ManageBooksMenuLink />
+        <ManageCheckoutsMenuLink />
       </NavigationMenu>
     </div>
     <UserMenu />
