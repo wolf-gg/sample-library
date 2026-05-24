@@ -9,12 +9,13 @@ import {
   FieldLabel,
 } from "client/libs/shadcn/field"
 import { Input } from "client/libs/shadcn/input"
-import z from "zod"
-import { Controller, useForm } from "react-hook-form"
-import useSWRMutation from "swr/mutation"
-import { CreateUserDto } from "common/dto/user"
-import { toast } from "sonner"
 import { ServerError } from "common/dto/error"
+import { CreateUserDto } from "common/dto/user"
+import { useRouter } from "next/navigation"
+import { Controller, useForm } from "react-hook-form"
+import { toast } from "sonner"
+import useSWRMutation from "swr/mutation"
+import z from "zod"
 
 const formSchema = z.object({
   username: z.string().nonempty("Username must not be empty"),
@@ -25,6 +26,8 @@ const formSchema = z.object({
 type Form = z.infer<typeof formSchema>
 
 export const RegisterForm: React.FC = () => {
+  const router = useRouter()
+
   const form = useForm<Form>({
     resolver: zodResolver(formSchema),
     defaultValues: { username: "", firstName: "", lastName: "" },
@@ -54,6 +57,7 @@ export const RegisterForm: React.FC = () => {
       await registerUser.trigger(data)
       form.reset()
       toast.success("Registration successful")
+      router.push("/login")
     } catch (error) {
       if (ServerError.validate(error)) {
         form.reset()
