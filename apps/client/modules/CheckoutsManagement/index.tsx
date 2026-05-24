@@ -26,11 +26,11 @@ export const CheckoutsManagement: React.FC = () => {
     return <LoadingScreen message="Loading current checkouts..." />
   }
 
-  console.log(data)
-
   return (
     <Table>
-      <TableCaption>A list of checkout records made by the user.</TableCaption>
+      <TableCaption>
+        A list of checkout records made by the members of the library.
+      </TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead>Book</TableHead>
