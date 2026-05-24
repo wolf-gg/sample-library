@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { BookController } from './book.controller';
-import { BookService } from './book.service';
 import { MongooseModule } from '@nestjs/mongoose';
+import { CheckoutRecordModule } from '../history/history.module';
+import { BookController } from './book.controller';
 import { Book, BookSchema } from './book.schema';
-import { UserModule } from '../user/user.module';
+import { BookService } from './book.service';
 
 @Module({
   imports: [
@@ -13,6 +13,7 @@ import { UserModule } from '../user/user.module';
         schema: BookSchema,
       },
     ]),
+    CheckoutRecordModule,
   ],
   controllers: [BookController],
   providers: [BookService],

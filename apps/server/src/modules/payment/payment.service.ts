@@ -39,6 +39,9 @@ export class PaymentService {
       .find({
         paidBy: userId,
       })
+      .sort({
+        paidAt: 'desc',
+      })
       .populate(['book', 'paidBy']);
     const payments = paymentsQuery.map((paymentQuery) => paymentQuery.toJSON());
 

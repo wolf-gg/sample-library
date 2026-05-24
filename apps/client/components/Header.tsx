@@ -1,6 +1,7 @@
 import { NavigationMenu } from "client/libs/shadcn/navigation-menu"
 import {
   BorrowMenuLink,
+  HistoryMenuLink,
   ManageMenuLink,
   PaymentsMenuLink,
   UserMenu,
@@ -12,6 +13,7 @@ export const Header: React.FC = () => (
       <h1 className="text-2xl font-bold">Sample Library</h1>
       <NavigationMenu>
         <BorrowMenuLink />
+        <HistoryMenuLink />
         <PaymentsMenuLink />
         <ManageMenuLink />
       </NavigationMenu>

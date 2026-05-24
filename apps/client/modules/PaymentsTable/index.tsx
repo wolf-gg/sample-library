@@ -1,5 +1,6 @@
 "use client"
 
+import { LoadingScreen } from "client/components/LoadingScreen"
 import {
   Table,
   TableBody,
@@ -22,7 +23,7 @@ const PaymentsTableWithUser: React.FC<{ userId: string }> = ({ userId }) => {
   })
 
   if (data === undefined) {
-    return <></>
+    return <LoadingScreen message="Loading payment records..." />
   }
 
   return (

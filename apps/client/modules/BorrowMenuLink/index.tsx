@@ -13,7 +13,7 @@ export const BorrowMenuLink: React.FC = () => {
   if (isLoggedIn === undefined && loggedInUser === undefined) {
     return <></>
   } else if (isLoggedIn === false && loggedInUser === undefined) {
-    return <NavigationMenuLink href="/">Borrow</NavigationMenuLink>
+    return <NavigationMenuLink href="/">Borrow Books</NavigationMenuLink>
   }
 
   if (loggedInUser === undefined) {
@@ -24,5 +24,5 @@ export const BorrowMenuLink: React.FC = () => {
     return <></>
   }
 
-  return <NavigationMenuLink href="/">Borrow</NavigationMenuLink>
+  return <NavigationMenuLink href="/">Borrow Books</NavigationMenuLink>
 }

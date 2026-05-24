@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BookModule } from './modules/book/book.module';
+import { CheckoutRecordModule } from './modules/history/history.module';
 import { PaymentModule } from './modules/payment/payment.module';
 import { UserModule } from './modules/user/user.module';
 
@@ -20,6 +21,7 @@ import { UserModule } from './modules/user/user.module';
     BookModule,
     UserModule,
     PaymentModule,
+    CheckoutRecordModule,
   ],
   controllers: [AppController],
   providers: [AppService],

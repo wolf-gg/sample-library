@@ -7,7 +7,7 @@ export const PaymentRow: React.FC<{
 }> = ({ bookTitle, amount, paidAt }) => (
   <TableRow>
     <TableCell>{bookTitle}</TableCell>
-    <TableCell>{new Date(paidAt).toLocaleDateString()}</TableCell>
+    <TableCell>{new Date(paidAt).toLocaleString()}</TableCell>
     <TableCell className="text-right">{`$${amount.toFixed(2)}`}</TableCell>
   </TableRow>
 )
