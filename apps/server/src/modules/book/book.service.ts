@@ -9,6 +9,7 @@ import {
   BookStatus,
   CreateBookDto,
   FindAllBooksResponse,
+  UpdateBookDto,
 } from 'common/dto/book';
 import { getIsOverdue } from 'common/utils/book';
 import mongoose, { HydratedDocument, Model } from 'mongoose';
@@ -87,6 +88,18 @@ export class BookService {
     const newBook = await this.bookRepository.create(book);
 
     return this.toDto(newBook);
+  }
+
+  async updateOne(id: string, book: UpdateBookDto) {
+    const updatedBook = await this.bookRepository.findByIdAndUpdate(id, {
+      ...book,
+    });
+
+    if (updatedBook === null) {
+      throw new NotFoundException('Book not found');
+    }
+
+    return this.toDto(updatedBook);
   }
 
   async deleteOne(id: string) {

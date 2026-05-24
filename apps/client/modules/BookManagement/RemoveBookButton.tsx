@@ -34,7 +34,7 @@ export const RemoveBookButton: React.FC<{ id: string; title: string }> = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="destructive">
+        <Button variant="destructive" className="w-10 h-10">
           <Trash />
         </Button>
       </DialogTrigger>

@@ -14,6 +14,11 @@ export interface CreateBookDto {
   author: string;
 }
 
+export interface UpdateBookDto {
+  title: string;
+  author: string;
+}
+
 export interface BorrowBookDto {
   borrowedBy: string;
 }

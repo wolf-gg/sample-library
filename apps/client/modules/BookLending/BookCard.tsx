@@ -52,7 +52,9 @@ const ActionButton: React.FC<{
     isLoggedIn === false ||
     borrowedAt === undefined
   ) {
-    return <></>
+    // Add a blank div so that the height of the card is maintained
+    // even if there is no button
+    return <div className="h-8"></div>
   }
 
   return <ReturnBookButton id={id} status={status} borrowedAt={borrowedAt} />

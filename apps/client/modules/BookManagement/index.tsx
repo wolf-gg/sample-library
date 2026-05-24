@@ -1,10 +1,10 @@
 "use client"
 
-import useSWR from "swr"
-import { AddBookDialog } from "./AddBookDialog"
-import { BookGrid } from "./BookGrid."
-import { FindAllBooksResponse } from "common/dto/book"
 import { LoadingScreen } from "client/components/LoadingScreen"
+import { FindAllBooksResponse } from "common/dto/book"
+import useSWR from "swr"
+import { AddBookButton } from "./AddBookButton"
+import { BookGrid } from "./BookGrid."
 
 export const BookManagement: React.FC = () => {
   const { data } = useSWR<FindAllBooksResponse>("fetch-all-books", async () => {
@@ -25,7 +25,7 @@ export const BookManagement: React.FC = () => {
             {`${data.count} books total`}
           </p>
         </div>
-        <AddBookDialog />
+        <AddBookButton />
       </div>
       <BookGrid books={data.books} />
     </div>

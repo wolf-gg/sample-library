@@ -21,7 +21,7 @@ import { BookDto, FindAllBooksResponse } from "common/dto/book"
 import { Plus } from "lucide-react"
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
-import { Key, mutate } from "swr"
+import { mutate } from "swr"
 import useSWRMutation from "swr/mutation"
 import z from "zod"
 
@@ -32,7 +32,7 @@ const formSchema = z.object({
 
 type Form = z.infer<typeof formSchema>
 
-export const AddBookDialog: React.FC = () => {
+export const AddBookButton: React.FC = () => {
   const [open, setOpen] = useState(false)
 
   const addBook = useSWRMutation(

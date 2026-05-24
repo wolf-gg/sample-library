@@ -34,6 +34,12 @@
 * **Prompt Template:**
 > Improve the title and description in 'LoginDialog' to show that only signed in users can borrow books
 
-## 7. Design: Add return dialog
+## 7. Feature: Add return dialog
 * **Prompt Template:**
 > Create a dialog that warns the user that other users can check out the book once they returned the book.
+
+## 8. Feature: Add update book button in the manage page
+* **Prompt Template:**
+> Create a dialog that allows a user to update the title and author of a book.
+>
+> Try to match the design pattern used in 'AddBookDialog'.
