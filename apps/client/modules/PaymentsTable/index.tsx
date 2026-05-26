@@ -54,7 +54,7 @@ const PaymentsTableWithUser: React.FC<{ userId: string }> = ({ userId }) => {
             Total
           </TableCell>
           <TableCell className="font-bold text-right">
-            {`$${data.reduce((total, { amount }) => total + amount, 0)}`}
+            {`$${data.reduce((total, { amount }) => total + amount, 0).toFixed(2)}`}
           </TableCell>
         </TableRow>
       </TableFooter>
