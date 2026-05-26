@@ -3,6 +3,9 @@
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "init": {
+      "cache": false
     }
   }
 }
