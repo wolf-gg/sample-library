@@ -5,11 +5,13 @@ import { EditCheckoutRowButton } from "./EditCheckoutRowButton"
 export const CheckoutRecordRow: React.FC<{
   recordId: string
   bookTitle: string
+  borrowerName?: string
   borrowedAt: string
   returned: boolean
-}> = ({ recordId, bookTitle, borrowedAt, returned }) => (
+}> = ({ recordId, bookTitle, borrowerName, borrowedAt, returned }) => (
   <TableRow>
     <TableCell>{bookTitle}</TableCell>
+    <TableCell>{`${borrowerName !== undefined ? borrowerName : "-"}`}</TableCell>
     <TableCell>{new Date(borrowedAt).toLocaleString()}</TableCell>
     <TableCell>{returned ? <Check /> : <X />}</TableCell>
     <TableCell className="flex justify-end">

@@ -9,12 +9,12 @@ import {
   TableHeader,
   TableRow,
 } from "client/libs/shadcn/table"
-import { CheckoutRecordDto } from "common/dto/history"
+import { AdminCheckoutRecordDto } from "common/dto/history"
 import useSWR from "swr"
 import { CheckoutRecordRow } from "./CheckoutRecordRow"
 
 export const CheckoutsManagement: React.FC = () => {
-  const { data } = useSWR<CheckoutRecordDto[]>(
+  const { data } = useSWR<AdminCheckoutRecordDto[]>(
     ["checkout-management-records", "admin"],
     async () => {
       const response = await fetch(`http://localhost:3001/admin/history`)
@@ -34,6 +34,7 @@ export const CheckoutsManagement: React.FC = () => {
       <TableHeader>
         <TableRow>
           <TableHead>Book</TableHead>
+          <TableHead>Borrower Name</TableHead>
           <TableHead>Checkout Date</TableHead>
           <TableHead>Returned</TableHead>
           <TableHead className="text-right">Edit</TableHead>
@@ -44,6 +45,7 @@ export const CheckoutsManagement: React.FC = () => {
           <CheckoutRecordRow
             key={record.id}
             recordId={record.id}
+            borrowerName={record.borrowerName}
             bookTitle={record.bookTitle}
             borrowedAt={record.borrowedAt}
             returned={record.returned}

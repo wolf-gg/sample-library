@@ -4,9 +4,14 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { CheckoutRecordDto, UpdateRecordDto } from 'common/dto/history';
+import {
+  AdminCheckoutRecordDto,
+  CheckoutRecordDto,
+  UpdateRecordDto,
+} from 'common/dto/history';
 import mongoose, { HydratedDocument, Model } from 'mongoose';
 import { Book } from '../book/book.schema';
+import { User } from '../user/user.schema';
 import { CheckoutRecord } from './history.schema';
 
 @Injectable()
@@ -28,15 +33,31 @@ export class CheckoutRecordService {
     };
   }
 
-  async findAllForAdmin(): Promise<CheckoutRecordDto[]> {
+  private toAdminDto(record: HydratedDocument<CheckoutRecord>) {
+    const book = record.book as Book;
+    const borrowedBy = record.borrowedBy as User | undefined;
+
+    return {
+      id: record.id,
+      bookTitle: book.title,
+      borrowerName: borrowedBy
+        ? `${borrowedBy.firstName} ${borrowedBy.lastName}`
+        : undefined,
+      borrowedAt: record.borrowedAt.toISOString(),
+      returnedAt: record.returnedAt?.toISOString(),
+      returned: record.returned,
+    };
+  }
+
+  async findAllForAdmin(): Promise<AdminCheckoutRecordDto[]> {
     const checkoutRecordsForAdmin = await this.checkoutRecordRepository
       .find()
       .sort({
         borrowedAt: 'desc',
       })
-      .populate('book');
+      .populate(['book', 'borrowedBy']);
 
-    return checkoutRecordsForAdmin.map((record) => this.toDto(record));
+    return checkoutRecordsForAdmin.map((record) => this.toAdminDto(record));
   }
 
   async findAllByUser(userId: string): Promise<CheckoutRecordDto[]> {
