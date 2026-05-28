@@ -22,11 +22,11 @@ export class CheckoutRecordService {
   ) {}
 
   private toDto(record: HydratedDocument<CheckoutRecord>) {
-    const book = record.book as Book;
+    const book = record.book as Book | null;
 
     return {
       id: record.id,
-      bookTitle: book.title,
+      bookTitle: book?.title,
       borrowedAt: record.borrowedAt.toISOString(),
       returnedAt: record.returnedAt?.toISOString(),
       returned: record.returned,
@@ -34,15 +34,13 @@ export class CheckoutRecordService {
   }
 
   private toAdminDto(record: HydratedDocument<CheckoutRecord>) {
-    const book = record.book as Book;
-    const borrowedBy = record.borrowedBy as User | undefined;
+    const book = record.book as Book | null;
+    const borrowedBy = record.borrowedBy as User;
 
     return {
       id: record.id,
-      bookTitle: book.title,
-      borrowerName: borrowedBy
-        ? `${borrowedBy.firstName} ${borrowedBy.lastName}`
-        : undefined,
+      bookTitle: book?.title,
+      borrowerName: `${borrowedBy.firstName} ${borrowedBy.lastName}`,
       borrowedAt: record.borrowedAt.toISOString(),
       returnedAt: record.returnedAt?.toISOString(),
       returned: record.returned,

@@ -5,7 +5,7 @@ export interface CheckoutRecordDto {
   returned: boolean;
   borrowedAt: string;
   returnedAt?: string;
-  bookTitle: string;
+  bookTitle?: string;
 }
 
 export type AdminCheckoutRecordDto = CheckoutRecordDto & {

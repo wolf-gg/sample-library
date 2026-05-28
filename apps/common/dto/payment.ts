@@ -4,8 +4,8 @@ import { UserDto } from "./user";
 export interface PaymentDto {
   id: string;
   amount: number;
-  book: BookDto;
-  paidBy: UserDto;
+  bookTitle?: string;
+  paidBy: string;
   paidAt: string;
 }
 

@@ -42,7 +42,7 @@ const PaymentsTableWithUser: React.FC<{ userId: string }> = ({ userId }) => {
         {data.map((payment) => (
           <PaymentRow
             key={payment.id}
-            bookTitle={payment.book.title}
+            bookTitle={payment.bookTitle}
             paidAt={payment.paidAt}
             amount={payment.amount}
           />

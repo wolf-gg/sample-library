@@ -43,3 +43,8 @@ You should see 1 book that has its status been changed to "Overdue". Return the 
 
 ## 11. Go to "Overdue Payments"
 There should be 1 record that shows the amount paid due to an overdue book.
+
+## 12. Deleting books
+Login as `admin` and delete one or all of the previously borrowed books. After deletion, check out the "Manage Checkouts" table. You should see "(Deleted book)" for records that have deleted books.
+
+Login as one of the users. Going to the payments and checkout history should also show the same value for records with deleted books.
