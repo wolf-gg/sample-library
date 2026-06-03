@@ -1,8 +1,8 @@
 "use client"
 
 import { useLoginStore } from "client/stores/login"
-import { LogoutButton } from "./LogoutButton"
 import { LoginButton } from "./LoginButton"
+import { LogoutButton } from "./LogoutButton"
 import { RegisterButton } from "./RegisterButton"
 
 export const UserMenu: React.FC = () => {

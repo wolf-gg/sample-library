@@ -4,7 +4,7 @@ import { create } from "zustand/react"
 
 type LoginStore = {
   loggedInUser?: UserDto
-  isLoggedIn?: boolean
+  isLoggedIn: boolean
   storeUserDetails: (user: UserDto) => void
   clearUserDetails: () => void
 }
@@ -13,7 +13,7 @@ export const useLoginStore = create<LoginStore>()(
   persist(
     (set) => ({
       loggedInUser: undefined,
-      isLoggedIn: undefined,
+      isLoggedIn: false,
       storeUserDetails: (user: UserDto) => {
         set({ loggedInUser: user, isLoggedIn: true })
       },
