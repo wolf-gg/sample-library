@@ -110,7 +110,7 @@ podman run --name <CONTAINER_NAME> -p 27017:27107 -d mongo:latest
 
 #### Connection to the server
 
-Once the database server is installed, provide the `DATABASE_URL` inside `apps/server/.env`. You can take a look in side `apps/server/sample.env` for a sample configuration.
+Once the database server is installed, provide the `DATABASE_URL` inside `apps/server/.env`. You can take a look inside `apps/server/sample.env` for a sample configuration.
 
 ### Preparing the application
 
@@ -125,7 +125,8 @@ npm install
 Turborepo will handle running both the server and client inside one terminal
 
 ```bash
-npm run dev
+npm run build
+npm start
 ```
 
 The application will be accessible via `localhost:3000`

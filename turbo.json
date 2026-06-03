@@ -1,5 +1,11 @@
 {
   "tasks": {
+    "build": {
+      "cache": false
+    },
+    "start": {
+      "cache": false
+    },
     "dev": {
       "cache": false,
       "persistent": true

@@ -9,7 +9,8 @@ This step will re-initialize all the data, deleting previous records, and creati
 **Run:** 
 ```bash
 npm run init
-npm run dev
+npm run build
+npm start
 ```
 
 Access the app through [localhost:3000](http://localhost:3000)

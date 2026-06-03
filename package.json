@@ -2,8 +2,8 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
+    "start": "turbo run start",
     "dev": "turbo run dev",
-    "lint": "turbo run lint",
     "init": "turbo run init"
   },
   "devDependencies": {
