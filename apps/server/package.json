@@ -8,7 +8,7 @@
     "build": "nest build",
     "start": "nest start",
     "dev": "nest start --watch",
-    "init": "npx migrate up init & npx migrate down init"
+    "init": "npx migrate up init && npx migrate down init"
   },
   "engines": {
     "npm": ">=10.0.0",
