@@ -91,9 +91,17 @@ export class BookService {
   }
 
   async updateOne(id: string, book: UpdateBookDto) {
-    const updatedBook = await this.bookRepository.findByIdAndUpdate(id, {
-      ...book,
-    });
+    const updatedBook = await this.bookRepository
+      .findByIdAndUpdate(id, {
+        ...book,
+      })
+      .populate({
+        path: 'checkoutRecord',
+        populate: {
+          path: 'borrowedBy',
+          model: 'User',
+        },
+      });
 
     if (updatedBook === null) {
       throw new NotFoundException('Book not found');

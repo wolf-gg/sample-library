@@ -95,7 +95,10 @@ export const UpdateBookButton: React.FC<{ book: BookDto }> = ({ book }) => {
         setOpen(nextOpen)
       }}
     >
-      <form id="update-book-form" onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        id={`update-book-form-${book.id}`}
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
         <DialogTrigger asChild>
           <Button variant="secondary" className="h-10 w-10">
             <Pencil />
@@ -149,7 +152,7 @@ export const UpdateBookButton: React.FC<{ book: BookDto }> = ({ book }) => {
                 Cancel
               </Button>
             </DialogClose>
-            <Button form="update-book-form" type="submit">
+            <Button form={`update-book-form-${book.id}`} type="submit">
               Save
             </Button>
           </DialogFooter>
